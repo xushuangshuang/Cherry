@@ -30,8 +30,7 @@ public class MainActivity extends SlidingFragmentActivity {
     private List<Fragment> mFragments = new ArrayList<Fragment>();
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
@@ -42,8 +41,7 @@ public class MainActivity extends SlidingFragmentActivity {
 
     }
 
-    private void initViewPager()
-    {
+    private void initViewPager() {
         mViewPager = (ViewPager) findViewById(R.id.id_viewpager);
         MainTab01 tab01 = new MainTab01();
         MainTab02 tab02 = new MainTab02();
@@ -54,26 +52,21 @@ public class MainActivity extends SlidingFragmentActivity {
         /**
          * 初始化Adapter
          */
-        mAdapter = new FragmentPagerAdapter(getSupportFragmentManager())
-        {
+        mAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
-            public int getCount()
-            {
+            public int getCount() {
                 return mFragments.size();
             }
 
             @Override
-            public Fragment getItem(int arg0)
-            {
+            public Fragment getItem(int arg0) {
                 return mFragments.get(arg0);
             }
         };
         mViewPager.setAdapter(mAdapter);
     }
 
-    private void initRightMenu()
-    {
-
+    private void initRightMenu() {
         Fragment leftMenuFragment = new LeftManageFragment();
         setBehindContentView(R.layout.manage_fragment_left);
         getSupportFragmentManager().beginTransaction()
@@ -98,13 +91,11 @@ public class MainActivity extends SlidingFragmentActivity {
                 .replace(R.id.id_right_menu_frame, rightMenuFragment).commit();
     }
 
-    public void showLeftMenu(View view)
-    {
+    public void showLeftMenu(View view) {
         getSlidingMenu().showMenu();
     }
 
-    public void showRightMenu(View view)
-    {
+    public void showRightMenu(View view) {
         getSlidingMenu().showSecondaryMenu();
     }
 }

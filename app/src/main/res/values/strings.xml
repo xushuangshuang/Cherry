@@ -7,5 +7,6 @@
 
 
     <string name="weather_text_view">天气</string>
-
+    <string name="weather_main_background">天气主页面的背景</string>
+    <string name="weather_state_image_view">天气状态的图片</string>
 </resources>

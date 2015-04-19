@@ -29,7 +29,8 @@ public class WeatherUserPageAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        return viewList.get(0);
+        container.addView(viewList.get(position));
+        return viewList.get(position);
     }
 
     @Override

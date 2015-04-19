@@ -74,9 +74,16 @@ public class WeatherActivity extends Activity {
             imageView_user_imgOne.setImageResource(StringManipulation.getRecIDFormWeather(weather.getWeather().get(0).getNow().getCode()));
         }
         textView_user_city.setText(weather.getWeather().get(0).getCity_name());
-        textView_user_temp.setText(weather.getWeather().get(0).getNow().getTemperature());
+        textView_user_temp.setText(weather.getWeather().get(0).getNow().getTemperature() + "℃");
         textView_user_weather.setText(weather.getWeather().get(0).getNow().getText());
-        textView_user_date.setText(AssistUtil.getDate());
+        textView_user_date.setText(AssistUtil.getDate() + "  " + AssistUtil.getWeek());
+        textView_user_index_d.setText(weather.getWeather().get(0).getToday().getSuggestion().getDressing().getDetails());
+        textView_user_index_uv.setText(weather.getWeather().get(0).getToday().getSuggestion().getUv().getDetails());
+        textView_user_index_xc.setText(weather.getWeather().get(0).getToday().getSuggestion().getCar_washing().getDetails());
+        textView_user_index_tr.setText(weather.getWeather().get(0).getToday().getSuggestion().getTravel().getDetails());
+        textView_user_index_co.setText("舒适度 " + weather.getWeather().get(0).getNow().getAir_quality().getCity().getCo());
+        textView_user_index_cl.setText(weather.getWeather().get(0).getToday().getSuggestion().getFlu().getDetails());
+        textView_user_index_ls.setText(weather.getWeather().get(0).getNow().getWind_direction() + "风  " +  weather.getWeather().get(0).getNow().getWind_speed() + " m/s");
     }
 
     private void initDate() {
@@ -85,7 +92,7 @@ public class WeatherActivity extends Activity {
                     @Override
                     public void onResponse(JSONObject response) {
                         weather = gson.fromJson(response.toString(), WeatherModel.class);
-                        if ( "OK".equals(weather.getStatus())){
+                        if ("OK".equals(weather.getStatus())) {
                             addDate();
                         }
                     }
@@ -136,8 +143,6 @@ public class WeatherActivity extends Activity {
                 .findViewById(R.id.textView_user_index_cl);
         textView_user_index_ls = (TextView) firstView
                 .findViewById(R.id.textView_user_index_ls);
-        textView_user_index_ag = (TextView) firstView
-                .findViewById(R.id.textView_user_index_ag);
         textView_user_weather = (TextView) firstView
                 .findViewById(R.id.textView_user_weather);
         linear_user_first_other = (LinearLayout) firstView

@@ -1,11 +1,12 @@
 package com.xushuangshuang.cherry.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by xuss on 2015/4/19.
  */
-public class Weather {
+public class Weather implements Serializable {
 
     public String status;
     public String city_id;

@@ -22,6 +22,8 @@ import com.google.gson.Gson;
 import com.xushuangshuang.cherry.R;
 import com.xushuangshuang.cherry.adapter.WeatherUserPageAdapter;
 import com.xushuangshuang.cherry.model.Weather;
+import com.xushuangshuang.cherry.model.WeatherModel;
+import com.xushuangshuang.cherry.util.StringManipulation;
 
 import org.json.JSONObject;
 
@@ -55,7 +57,7 @@ public class WeatherActivity extends Activity {
     private RequestQueue mQueue;
     private String uri = " https://api.thinkpage.cn/v2/weather/all.json?city=北京&language=zh-chs&unit=c&aqi=city&key=ERBQFQ3STU";
     private Gson gson;
-    private Weather weather;
+    private WeatherModel weather;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +68,10 @@ public class WeatherActivity extends Activity {
         initDate();
     }
 
-    private void addDate(){
-//        imageView_user_imgOne.setImageResource();
+    private void addDate() {
+        if (weather != null && weather.getWeather().get(0) != null && weather.getWeather().get(0).getNow().getCode() != null) {
+            imageView_user_imgOne.setImageResource(StringManipulation.getRecIDFormWeather(weather.getWeather().get(0).getNow().getCode()));
+        }
     }
 
     private void initDate() {
@@ -75,7 +79,8 @@ public class WeatherActivity extends Activity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        weather = gson.fromJson(response.toString(), Weather.class);
+                        weather = gson.fromJson(response.toString(), WeatherModel.class);
+                        addDate();
                     }
                 },
                 new Response.ErrorListener() {

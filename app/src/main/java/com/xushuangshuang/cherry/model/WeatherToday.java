@@ -7,7 +7,15 @@ public class WeatherToday {
 
     public String sunrise;
     public String sunset;
-    public String suggestion;
+    public WeatherTodaySuggest suggestion;
+
+    public WeatherTodaySuggest getSuggestion() {
+        return suggestion;
+    }
+
+    public void setSuggestion(WeatherTodaySuggest suggestion) {
+        this.suggestion = suggestion;
+    }
 
     public String getSunrise() {
         return sunrise;
@@ -15,14 +23,6 @@ public class WeatherToday {
 
     public void setSunrise(String sunrise) {
         this.sunrise = sunrise;
-    }
-
-    public String getSuggestion() {
-        return suggestion;
-    }
-
-    public void setSuggestion(String suggestion) {
-        this.suggestion = suggestion;
     }
 
     public String getSunset() {

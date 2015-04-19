@@ -15,7 +15,15 @@ public class WeatherNow {
     public String visibility;
     public String pressure;
     public String pressure_rising;
-    public String air_quality;
+    public WeatherAirQuerty air_quality;
+
+    public WeatherAirQuerty getAir_quality() {
+        return air_quality;
+    }
+
+    public void setAir_quality(WeatherAirQuerty air_quality) {
+        this.air_quality = air_quality;
+    }
 
     public String getText() {
         return text;
@@ -47,14 +55,6 @@ public class WeatherNow {
 
     public void setTemperature(String temperature) {
         this.temperature = temperature;
-    }
-
-    public String getAir_quality() {
-        return air_quality;
-    }
-
-    public void setAir_quality(String air_quality) {
-        this.air_quality = air_quality;
     }
 
     public String getPressure_rising() {

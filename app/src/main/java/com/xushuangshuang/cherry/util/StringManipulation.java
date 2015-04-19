@@ -44,8 +44,8 @@ public class StringManipulation {
         return url.toString();
     }
 
-    public static int getRecIDFormWeather(String weather) {
-        int code = Integer.parseInt(weather);
+    public static int getRecIDFormWeather(String codeStr) {
+        int code = Integer.parseInt(codeStr);
         int[] drawableWeatherId = {R.drawable.sunny_0, R.drawable.clear_1, R.drawable.fair_2, R.drawable.n_fair_3,
                 R.drawable.cloudy_4, R.drawable.partly_cloudy_5, R.drawable.n_partly_cloudy_6, R.drawable.mostly_cloudy_7,
                 R.drawable.n_mostly_cloudy_8, R.drawable.overcast_9, R.drawable.shower_10, R.drawable.thunder_shower_11,

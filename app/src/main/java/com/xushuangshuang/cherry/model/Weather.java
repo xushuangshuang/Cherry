@@ -10,10 +10,19 @@ public class Weather implements Serializable {
 
     public String status;
     public String city_id;
+    public String city_name;
     public String last_update;
     public WeatherNow now;
     public WeatherToday today;
     public List<WeatherFuture> future;
+
+    public String getCity_name() {
+        return city_name;
+    }
+
+    public void setCity_name(String city_name) {
+        this.city_name = city_name;
+    }
 
     public List<WeatherFuture> getFuture() {
         return future;

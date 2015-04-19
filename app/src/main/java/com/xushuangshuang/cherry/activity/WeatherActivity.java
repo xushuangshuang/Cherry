@@ -23,6 +23,7 @@ import com.xushuangshuang.cherry.R;
 import com.xushuangshuang.cherry.adapter.WeatherUserPageAdapter;
 import com.xushuangshuang.cherry.model.Weather;
 import com.xushuangshuang.cherry.model.WeatherModel;
+import com.xushuangshuang.cherry.util.AssistUtil;
 import com.xushuangshuang.cherry.util.StringManipulation;
 
 import org.json.JSONObject;
@@ -72,6 +73,10 @@ public class WeatherActivity extends Activity {
         if (weather != null && weather.getWeather().get(0) != null && weather.getWeather().get(0).getNow().getCode() != null) {
             imageView_user_imgOne.setImageResource(StringManipulation.getRecIDFormWeather(weather.getWeather().get(0).getNow().getCode()));
         }
+        textView_user_city.setText(weather.getWeather().get(0).getCity_name());
+        textView_user_temp.setText(weather.getWeather().get(0).getNow().getTemperature());
+        textView_user_weather.setText(weather.getWeather().get(0).getNow().getText());
+        textView_user_date.setText(AssistUtil.getDate());
     }
 
     private void initDate() {
@@ -80,7 +85,9 @@ public class WeatherActivity extends Activity {
                     @Override
                     public void onResponse(JSONObject response) {
                         weather = gson.fromJson(response.toString(), WeatherModel.class);
-                        addDate();
+                        if ( "OK".equals(weather.getStatus())){
+                            addDate();
+                        }
                     }
                 },
                 new Response.ErrorListener() {

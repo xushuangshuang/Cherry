@@ -67,7 +67,7 @@ public class WeatherActivity extends Activity {
     }
 
     private void addDate(){
-
+//        imageView_user_imgOne.setImageResource();
     }
 
     private void initDate() {
@@ -131,6 +131,5 @@ public class WeatherActivity extends Activity {
         linear_user_first_other = (LinearLayout) firstView
                 .findViewById(R.id.linear_user_first_other);
     }
-
 
 }

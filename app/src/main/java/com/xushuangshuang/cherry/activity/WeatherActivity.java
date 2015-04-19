@@ -126,7 +126,6 @@ public class WeatherActivity extends Activity {
                 .findViewById(R.id.textView_user_index_ls);
         textView_user_index_ag = (TextView) firstView
                 .findViewById(R.id.textView_user_index_ag);
-
         textView_user_weather = (TextView) firstView
                 .findViewById(R.id.textView_user_weather);
         linear_user_first_other = (LinearLayout) firstView

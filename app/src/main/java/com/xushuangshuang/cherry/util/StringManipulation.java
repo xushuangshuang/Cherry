@@ -1,6 +1,12 @@
 package com.xushuangshuang.cherry.util;
 
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by xuss on 2015/4/19.
@@ -27,5 +33,16 @@ public class StringManipulation {
         String timeMillisSequence = sdf.format(System.currentTimeMillis()) + "-" + nanoTimeStr;
 
         return timeMillisSequence;
+    }
+
+    public static String assembleURI(String schemeSpecificPart, Map<String, Object> parameterMap) {
+        StringBuffer url = new StringBuffer(schemeSpecificPart);
+        url.append("?");
+        Set<String> keySet = parameterMap.keySet();
+        for (String key : keySet) {
+            url.append(key).append("=").append(parameterMap.get(key));
+        }
+
+        return url.toString();
     }
 }

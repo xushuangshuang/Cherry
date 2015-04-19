@@ -3,10 +3,14 @@ package com.xushuangshuang.cherry.activity;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.xushuangshuang.cherry.R;
 import com.xushuangshuang.cherry.adapter.WeatherUserPageAdapter;
@@ -23,12 +27,27 @@ public class WeatherActivity extends Activity {
     private LayoutInflater viewPageLayoutInflater;
     private ArrayList<View> views;
     private WeatherUserPageAdapter weatherUserPageAdapter;
+    private ImageView imageView_user_imgOne;
+    private TextView textView_user_city;
+    private TextView textView_user_date;
+    private TextView textView_user_temp;
+    private TextView textView_user_index_d;
+    private TextView textView_user_index_uv;
+    private TextView textView_user_index_xc;
+    private TextView textView_user_index_tr;
+    private TextView textView_user_index_co;
+    private TextView textView_user_index_cl;
+    private TextView textView_user_index_ls;
+    private TextView textView_user_index_ag;
+    private TextView textView_user_weather;
+    private LinearLayout linear_user_first_other;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         initView();
+        initLayout();
     }
 
     private void initView(){
@@ -40,5 +59,38 @@ public class WeatherActivity extends Activity {
         views.add(viewPageLayoutInflater.inflate(R.layout.weather_user_page,null));
         weatherUserPageAdapter = new WeatherUserPageAdapter(views);
         userViewPager.setAdapter(weatherUserPageAdapter);
+    }
+
+    private void initLayout(){
+        View firstView = views.get(0);
+        imageView_user_imgOne = (ImageView) firstView
+                .findViewById(R.id.imageView_user_imgOne);
+        textView_user_city = (TextView) firstView
+                .findViewById(R.id.textView_user_city);
+        textView_user_date = (TextView) firstView
+                .findViewById(R.id.textView_user_date);
+        textView_user_temp = (TextView) firstView
+                .findViewById(R.id.textView_user_temp);
+        textView_user_index_d = (TextView) firstView
+                .findViewById(R.id.textView_user_index_d);
+        textView_user_index_uv = (TextView) firstView
+                .findViewById(R.id.textView_user_index_uv);
+        textView_user_index_xc = (TextView) firstView
+                .findViewById(R.id.textView_user_index_xc);
+        textView_user_index_tr = (TextView) firstView
+                .findViewById(R.id.textView_user_index_tr);
+        textView_user_index_co = (TextView) firstView
+                .findViewById(R.id.textView_user_index_co);
+        textView_user_index_cl = (TextView) firstView
+                .findViewById(R.id.textView_user_index_cl);
+        textView_user_index_ls = (TextView) firstView
+                .findViewById(R.id.textView_user_index_ls);
+        textView_user_index_ag = (TextView) firstView
+                .findViewById(R.id.textView_user_index_ag);
+
+        textView_user_weather = (TextView) firstView
+                .findViewById(R.id.textView_user_weather);
+        linear_user_first_other = (LinearLayout) firstView
+                .findViewById(R.id.linear_user_first_other);
     }
 }

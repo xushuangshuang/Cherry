@@ -53,7 +53,7 @@ public class WeatherActivity extends Activity {
     private LinearLayout linear_user_first_other;
 
     private RequestQueue mQueue;
-    private String uri = "https://api.thinkpage.cn/v2/weather/all.json?city=%E5%8C%97%E4%BA%AC&language=zh-chs&unit=c&aqi=city&key=JXEOKCLHRU";
+    private String uri = " https://api.thinkpage.cn/v2/weather/all.json?city=北京&language=zh-chs&unit=c&aqi=city&key=ERBQFQ3STU";
     private Gson gson;
     private Weather weather;
 
@@ -66,12 +66,15 @@ public class WeatherActivity extends Activity {
         initDate();
     }
 
+    private void addDate(){
+
+    }
+
     private void initDate() {
         JsonObjectRequest weatherModel = new JsonObjectRequest(uri, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.e("test", response.toString());
                         weather = gson.fromJson(response.toString(), Weather.class);
                     }
                 },

@@ -20,6 +20,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.xushuangshuang.cherry.R;
+import com.xushuangshuang.cherry.adapter.FutureWeatherViewPagerAdapter;
 import com.xushuangshuang.cherry.adapter.WeatherUserPageAdapter;
 import com.xushuangshuang.cherry.model.Weather;
 import com.xushuangshuang.cherry.model.WeatherModel;
@@ -27,8 +28,10 @@ import com.xushuangshuang.cherry.util.AssistUtil;
 import com.xushuangshuang.cherry.util.StringManipulation;
 
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by xuss on 2015/4/19.
@@ -40,6 +43,7 @@ public class WeatherActivity extends Activity {
     private LayoutInflater viewPageLayoutInflater;
     private ArrayList<View> views;
     private WeatherUserPageAdapter weatherUserPageAdapter;
+    private FutureWeatherViewPagerAdapter futureWeatherViewPagerAdapter;
     private ImageView imageView_user_imgOne;
     private TextView textView_user_city;
     private TextView textView_user_date;
@@ -51,39 +55,48 @@ public class WeatherActivity extends Activity {
     private TextView textView_user_index_co;
     private TextView textView_user_index_cl;
     private TextView textView_user_index_ls;
-    private TextView textView_user_index_ag;
     private TextView textView_user_weather;
-    private LinearLayout linear_user_first_other;
+    private ViewPager futureOneWeekViewPager;
 
     private RequestQueue mQueue;
     private String uri = " https://api.thinkpage.cn/v2/weather/all.json?city=北京&language=zh-chs&unit=c&aqi=city&key=ERBQFQ3STU";
     private Gson gson;
     private WeatherModel weather;
+    private ArrayList<View> viewArrayList;
+    private ImageView futureImageView;
+    private TextView futureDateTextView;
+    private TextView futureWeatherTextView;
+    private TextView futureTempTextView;
+    private TextView futureWindTextView;
+    private ImageView futureImageViewTwo;
+    private TextView futureDateTextViewTwo;
+    private TextView futureWeatherTextViewTwo;
+    private TextView futureTempTextViewTwo;
+    private TextView futureWindTextViewTwo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         initView();
-        initLayout();
         initDate();
     }
 
     private void addDate() {
         if (weather != null && weather.getWeather().get(0) != null && weather.getWeather().get(0).getNow().getCode() != null) {
             imageView_user_imgOne.setImageResource(StringManipulation.getRecIDFormWeather(weather.getWeather().get(0).getNow().getCode()));
+            textView_user_city.setText(weather.getWeather().get(0).getCity_name());
+            textView_user_temp.setText(weather.getWeather().get(0).getNow().getTemperature() + "℃");
+            textView_user_weather.setText(weather.getWeather().get(0).getNow().getText());
+            textView_user_date.setText(AssistUtil.getDate() + "  " + AssistUtil.getWeek());
+            textView_user_index_d.setText(weather.getWeather().get(0).getToday().getSuggestion().getDressing().getDetails());
+            textView_user_index_uv.setText(weather.getWeather().get(0).getToday().getSuggestion().getUv().getDetails());
+            textView_user_index_xc.setText(weather.getWeather().get(0).getToday().getSuggestion().getCar_washing().getDetails());
+            textView_user_index_tr.setText(weather.getWeather().get(0).getToday().getSuggestion().getTravel().getDetails().replace(";", ""));
+            textView_user_index_co.setText("舒适度 " + weather.getWeather().get(0).getNow().getAir_quality().getCity().getCo());
+            textView_user_index_cl.setText(weather.getWeather().get(0).getToday().getSuggestion().getFlu().getDetails().replace(";", ""));
+            textView_user_index_ls.setText(weather.getWeather().get(0).getNow().getWind_direction() + "风  " + weather.getWeather().get(0).getNow().getWind_speed() + " m/s");
         }
-        textView_user_city.setText(weather.getWeather().get(0).getCity_name());
-        textView_user_temp.setText(weather.getWeather().get(0).getNow().getTemperature() + "℃");
-        textView_user_weather.setText(weather.getWeather().get(0).getNow().getText());
-        textView_user_date.setText(AssistUtil.getDate() + "  " + AssistUtil.getWeek());
-        textView_user_index_d.setText(weather.getWeather().get(0).getToday().getSuggestion().getDressing().getDetails());
-        textView_user_index_uv.setText(weather.getWeather().get(0).getToday().getSuggestion().getUv().getDetails());
-        textView_user_index_xc.setText(weather.getWeather().get(0).getToday().getSuggestion().getCar_washing().getDetails());
-        textView_user_index_tr.setText(weather.getWeather().get(0).getToday().getSuggestion().getTravel().getDetails());
-        textView_user_index_co.setText("舒适度 " + weather.getWeather().get(0).getNow().getAir_quality().getCity().getCo());
-        textView_user_index_cl.setText(weather.getWeather().get(0).getToday().getSuggestion().getFlu().getDetails());
-        textView_user_index_ls.setText(weather.getWeather().get(0).getNow().getWind_direction() + "风  " +  weather.getWeather().get(0).getNow().getWind_speed() + " m/s");
     }
 
     private void initDate() {
@@ -92,8 +105,13 @@ public class WeatherActivity extends Activity {
                     @Override
                     public void onResponse(JSONObject response) {
                         weather = gson.fromJson(response.toString(), WeatherModel.class);
-                        if ("OK".equals(weather.getStatus())) {
+                        if ("OK".equals(weather.getStatus()) && weather != null) {
                             addDate();
+                            for (int viewNum = 0; viewNum < viewArrayList.size(); viewNum++) {
+                                initFutureViewPage(viewArrayList.get(viewNum));
+                                initDateFuture(viewNum);
+                            }
+
                         }
                     }
                 },
@@ -117,6 +135,8 @@ public class WeatherActivity extends Activity {
         views.add(viewPageLayoutInflater.inflate(R.layout.weather_user_page, null));
         weatherUserPageAdapter = new WeatherUserPageAdapter(views);
         userViewPager.setAdapter(weatherUserPageAdapter);
+        initLayout();
+        initViewPage();
     }
 
     private void initLayout() {
@@ -145,8 +165,49 @@ public class WeatherActivity extends Activity {
                 .findViewById(R.id.textView_user_index_ls);
         textView_user_weather = (TextView) firstView
                 .findViewById(R.id.textView_user_weather);
-        linear_user_first_other = (LinearLayout) firstView
-                .findViewById(R.id.linear_user_first_other);
+        futureOneWeekViewPager = (ViewPager) firstView
+                .findViewById(R.id.one_week_view_pager);
+    }
+
+    private void initFutureViewPage(View futureView) {
+        futureImageView = (ImageView) futureView.findViewById(R.id.future_image_view);
+        futureImageViewTwo = (ImageView) futureView.findViewById(R.id.future_image_two_view);
+        futureDateTextView = (TextView) futureView.findViewById(R.id.future_date);
+        futureDateTextViewTwo = (TextView) futureView.findViewById(R.id.future_two_date);
+        futureWeatherTextView = (TextView) futureView.findViewById(R.id.future_weather);
+        futureWeatherTextViewTwo = (TextView) futureView.findViewById(R.id.future_two_weather);
+        futureTempTextView = (TextView) futureView.findViewById(R.id.future_temp);
+        futureTempTextViewTwo = (TextView) futureView.findViewById(R.id.future_two_temp);
+        futureWindTextView = (TextView) futureView.findViewById(R.id.future_wind);
+        futureWindTextViewTwo = (TextView) futureView.findViewById(R.id.future_two_wind);
+    }
+
+    private void initDateFuture(int num) {
+        if (weather != null && weather.getWeather().get(0) != null && weather.getWeather().get(0).getNow().getCode() != null) {
+            futureImageView.setImageResource(StringManipulation.getRecIDFormWeather(weather.getWeather().get(0).getFuture().get(num).getCode1()));
+            futureImageViewTwo.setImageResource(StringManipulation.getRecIDFormWeather(weather.getWeather().get(0).getFuture().get(num + 1).getCode1()));
+            futureDateTextView.setText(weather.getWeather().get(0).getFuture().get(num).getDate());
+            futureDateTextViewTwo.setText(weather.getWeather().get(0).getFuture().get(num + 1).getDate());
+            futureWeatherTextView.setText(weather.getWeather().get(0).getFuture().get(num).getText());
+            futureWeatherTextViewTwo.setText(weather.getWeather().get(0).getFuture().get(num + 1).getText());
+            futureTempTextView.setText("最高：" + weather.getWeather().get(0).getFuture().get(num).getHigh() + "最低：" + weather.getWeather().get(0).getFuture().get(num).getLow());
+            futureTempTextViewTwo.setText("最高：" + weather.getWeather().get(0).getFuture().get(num + 1).getHigh() + "最低：" + weather.getWeather().get(0).getFuture().get(num + 1).getLow());
+            futureWindTextView.setText(weather.getWeather().get(0).getFuture().get(num).getWind());
+            futureWindTextViewTwo.setText(weather.getWeather().get(0).getFuture().get(num + 1).getWind());
+        }
+    }
+
+
+    public void initViewPage() {
+        viewArrayList = new ArrayList<View>();
+        int num = 0;
+        while (num < 7) {
+            View futureView = viewPageLayoutInflater.inflate(R.layout.future_weather, null);
+            viewArrayList.add(futureView);
+            num++;
+        }
+        futureWeatherViewPagerAdapter = new FutureWeatherViewPagerAdapter(viewArrayList);
+        futureOneWeekViewPager.setAdapter(futureWeatherViewPagerAdapter);
     }
 
 }
